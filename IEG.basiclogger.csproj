@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 
     <PackageId>BasicLogger</PackageId>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>ibrahim ethem gürsoy</Authors>
     <Company>ieg</Company>
     <RepositoryUrl>https://github.com/iegrsy/IEG.basiclogger.git</RepositoryUrl>
