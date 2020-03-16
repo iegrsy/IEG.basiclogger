@@ -13,41 +13,63 @@ namespace IEG
             return $"{DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff")}\t{t}\t{tag}\t[{System.Threading.Thread.CurrentThread.ManagedThreadId}]\t{s}\n";
         }
 
+        private static int _LOG_LEVEL = 0;
+        public static int LogLevel { get { return _LOG_LEVEL; } set { _LOG_LEVEL = value; } }
+
         public string TAG { get; private set; }
 
-        public bool IsLog { get; set; }
+        public bool IsLog { get; set; } = false;
 
         public Logger(string tag)
         {
             TAG = tag;
         }
 
-        public void Debug(string s)
+        public void Log(string s)
         {
-            string l = GetFormattedOut(s, "DEBUG", TAG);
+            string l = GetFormattedOut(s, "LOG", TAG);
             if (IsLog) Write2File(l);
             System.Console.WriteLine(l);
+        }
+
+        public void Debug(string s)
+        {
+            if (_LOG_LEVEL <= 1)
+            {
+                string l = GetFormattedOut(s, "DEBUG", TAG);
+                if (IsLog) Write2File(l);
+                System.Console.WriteLine(l);
+            }
         }
 
         public void Info(string s)
         {
-            string l = GetFormattedOut(s, "INFO", TAG);
-            if (IsLog) Write2File(l);
-            System.Console.WriteLine(l);
+            if (_LOG_LEVEL <= 2)
+            {
+                string l = GetFormattedOut(s, "INFO", TAG);
+                if (IsLog) Write2File(l);
+                System.Console.WriteLine(l);
+            }
         }
 
         public void Warn(string s)
         {
-            string l = GetFormattedOut(s, "WARN", TAG);
-            if (IsLog) Write2File(l);
-            System.Console.WriteLine(l);
+            if (_LOG_LEVEL <= 3)
+            {
+                string l = GetFormattedOut(s, "WARN", TAG);
+                if (IsLog) Write2File(l);
+                System.Console.WriteLine(l);
+            }
         }
 
         public void Error(string s, Exception e)
         {
-            string l = GetFormattedOut(s, "ERROR", TAG);
-            if (IsLog) Write2File(l);
-            System.Console.WriteLine(l, e);
+            if (_LOG_LEVEL <= 4)
+            {
+                string l = GetFormattedOut(s, "ERROR", TAG);
+                if (IsLog) Write2File($"{l} {e}");
+                System.Console.WriteLine(l, e);
+            }
         }
 
         private ConcurrentQueue<string> logQ = new ConcurrentQueue<string>();
